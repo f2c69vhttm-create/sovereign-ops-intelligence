@@ -3,147 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PLAYA GRANDE | Operations</title>
+    <title>PLAYA GRANDE | Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #D4AF37; --navy: #000d26; }
-        body { background-color: #050505; color: white; font-family: 'Inter', sans-serif; margin: 0; }
+        body { background-color: #050505; color: white; font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
         .tech-font { font-family: 'Orbitron', sans-serif; }
-        .glass-card { background: rgba(0, 13, 38, 0.7); border: 1px solid rgba(212, 175, 55, 0.2); backdrop-filter: blur(10px); }
-        .btn-action { transition: all 0.2s; border: 1px solid rgba(212, 175, 55, 0.3); }
-        .btn-action:active { transform: scale(0.95); opacity: 0.8; }
+        .glass-card { background: rgba(0, 13, 38, 0.8); border: 1px solid rgba(212, 175, 55, 0.2); backdrop-filter: blur(10px); }
+        .input-dark { background: rgba(255,255,255,0.05); border: 1px solid rgba(212, 175, 55, 0.2); color: white; border-radius: 12px; padding: 10px; font-size: 12px; }
+        .btn-gold { background: linear-gradient(135deg, #D4AF37 0%, #AA8A2E 100%); color: #000d26; font-weight: 800; }
+        .btn-outline { border: 1px solid rgba(212, 175, 55, 0.4); color: #D4AF37; font-weight: 600; }
+        .tab-active { color: #D4AF37; border-bottom: 2px solid #D4AF37; }
     </style>
 </head>
 <body>
 
     <nav class="flex justify-around bg-[#000d26] border-b border-[#D4AF37]/20 p-4 sticky top-0 z-50">
-        <button onclick="switchTab('registro')" id="btn-reg" class="text-[10px] tracking-[0.2em] uppercase font-bold text-[#D4AF37] border-b-2 border-[#D4AF37] pb-1">Control de Acceso</button>
-        <button onclick="switchTab('reporte')" id="btn-rep" class="text-[10px] tracking-[0.2em] uppercase font-bold text-white/40">Reporte Ejecutivo</button>
+        <button onclick="switchTab('registro')" id="btn-reg" class="text-[10px] tracking-widest uppercase font-bold tab-active pb-1">Control de Acceso</button>
+        <button onclick="switchTab('reporte')" id="btn-rep" class="text-[10px] tracking-widest uppercase font-bold text-white/40 pb-1">Reporte Ejecutivo</button>
     </nav>
 
-    <div id="section-registro" class="p-6 max-w-lg mx-auto space-y-8 animate-fade-in">
+    <div id="section-registro" class="p-6 max-w-lg mx-auto space-y-6">
         <div class="text-center">
-            <h1 class="tech-font text-[#D4AF37] tracking-[0.3em] text-lg">PLAYA GRANDE</h1>
-            <p class="text-[8px] uppercase tracking-[0.5em] opacity-40">Security Operations Unit</p>
+            <h1 class="tech-font text-[#D4AF37] tracking-[0.3em] text-lg">OPERATIONS UNIT</h1>
+            <p id="live-clock" class="text-[9px] opacity-50 tracking-[0.2em] mt-1"></p>
         </div>
 
-        <div class="glass-card p-5 rounded-3xl space-y-4">
-            <h3 class="text-[10px] tech-font text-[#D4AF37] tracking-widest uppercase">Protocolo de Miembros</h3>
-            <div class="grid grid-cols-2 gap-4">
-                <button onclick="registrar('Miembro', 'Entrada')" class="btn-action bg-[#D4AF37] text-[#000d26] py-6 rounded-2xl font-bold uppercase text-[10px] shadow-lg shadow-gold/10">Entrada</button>
-                <button onclick="registrar('Miembro', 'Salida')" class="btn-action bg-white/5 text-white py-6 rounded-2xl font-bold uppercase text-[10px]">Salida</button>
-            </div>
-        </div>
+        <div class="glass-card p-6 rounded-3xl space-y-5">
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="flex flex-col">
+                        <label class="text-[8px] uppercase opacity-40 mb-1 ml-2">Villa / Ubicación</label>
+                        <input type="text" id="input-villa" placeholder="Ej: Villa 05" class="input-dark outline-none focus:border-[#D4AF37]">
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="text-[8px] uppercase opacity-40 mb-1 ml-2">Género</label>
+                        <select id="input-genero" class="input-dark outline-none">
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                        </select>
+                    </div>
+                </div>
 
-        <div class="glass-card p-5 rounded-3xl space-y-4">
-            <h3 class="text-[10px] tech-font text-white/60 tracking-widest uppercase">Control de Visitantes</h3>
-            <div class="grid grid-cols-2 gap-4">
-                <button onclick="registrar('Visitante', 'Entrada')" class="btn-action bg-white/10 text-white py-6 rounded-2xl font-bold uppercase text-[10px]">Entrada</button>
-                <button onclick="registrar('Visitante', 'Salida')" class="btn-action bg-white/5 border-dashed border-white/20 text-white/60 py-6 rounded-2xl font-bold uppercase text-[10px]">Salida</button>
+                <div class="grid grid-cols-2 gap-4 pt-2">
+                    <button onclick="procesar('Miembro', 'Entrada')" class="btn-gold py-5 rounded-2xl text-[10px] uppercase tracking-widest active:scale-95 transition">Entrada Miembro</button>
+                    <button onclick="procesar('Visitante', 'Entrada')" class="btn-outline py-5 rounded-2xl text-[10px] uppercase tracking-widest active:scale-95 transition">Entrada Visita</button>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="procesar('Miembro', 'Salida')" class="bg-white/5 py-4 rounded-xl text-[9px] uppercase font-bold tracking-widest border border-white/10">Salida Miembro</button>
+                    <button onclick="procesar('Visitante', 'Salida')" class="bg-white/5 py-4 rounded-xl text-[9px] uppercase font-bold tracking-widest border border-white/10">Salida Visita</button>
+                </div>
             </div>
         </div>
 
         <div class="space-y-3">
-            <p class="text-[8px] uppercase tracking-widest opacity-40">Últimos Movimientos</p>
+            <p class="text-[8px] uppercase tracking-widest opacity-40">Registro de Movimientos (Hoy)</p>
             <div id="log-actividad" class="space-y-2 text-[10px]">
-                <div class="p-3 bg-white/5 rounded-lg border border-white/5 opacity-50 italic text-center">Esperando registros...</div>
-            </div>
+                </div>
         </div>
     </div>
 
-    <div id="section-reporte" class="hidden p-6 max-w-2xl mx-auto space-y-8">
-        <div class="flex justify-between items-center border-b border-[#D4AF37]/30 pb-4">
-            <h2 class="text-[#D4AF37] font-bold tracking-[0.2em] uppercase text-xs text-left">Analytics Dashboard</h2>
-            <span class="text-[8px] opacity-40 uppercase">Live Intelligence</span>
+    <div id="section-reporte" class="hidden p-6 max-w-2xl mx-auto space-y-8 animate-fade-in">
+        <header class="border-b border-[#D4AF37]/30 pb-4">
+            <h2 class="text-[#D4AF37] font-bold tracking-[0.2em] uppercase text-xs">Executive Audit Report</h2>
+            <p class="text-[8px] opacity-40">Segmentación por Género y Ubicación</p>
+        </header>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="glass-card p-4 rounded-xl text-center">
+                <p class="text-[7px] opacity-40 uppercase">Hombres</p>
+                <span id="kpi-m" class="text-xl font-bold text-[#D4AF37]">0</span>
+            </div>
+            <div class="glass-card p-4 rounded-xl text-center">
+                <p class="text-[7px] opacity-40 uppercase">Mujeres</p>
+                <span id="kpi-f" class="text-xl font-bold text-white">0</span>
+            </div>
+            <div class="glass-card p-4 rounded-xl text-center">
+                <p class="text-[7px] opacity-40 uppercase">Total Entradas</p>
+                <span id="kpi-total" class="text-xl font-bold text-white">0</span>
+            </div>
+            <div class="glass-card p-4 rounded-xl text-center">
+                <p class="text-[7px] opacity-40 uppercase">Villas Activas</p>
+                <span id="kpi-villas" class="text-xl font-bold text-[#D4AF37]">0</span>
+            </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
-            <div class="glass-card p-4 rounded-2xl text-center">
-                <p class="text-[8px] opacity-40 uppercase mb-1">Total Miembros</p>
-                <span id="kpi-miembros" class="text-2xl font-bold text-[#D4AF37]">0</span>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="glass-card p-4 rounded-2xl">
+                <p class="text-[8px] text-center uppercase tracking-widest mb-4">Balance de Género</p>
+                <canvas id="genderChart"></canvas>
             </div>
-            <div class="glass-card p-4 rounded-2xl text-center">
-                <p class="text-[8px] opacity-40 uppercase mb-1">Total Visitas</p>
-                <span id="kpi-visitas" class="text-2xl font-bold text-white">0</span>
+            <div class="glass-card p-4 rounded-2xl">
+                <p class="text-[8px] text-center uppercase tracking-widest mb-4">Flujo Horario</p>
+                <canvas id="flowChart"></canvas>
             </div>
-        </div>
-
-        <div class="glass-card p-6 rounded-3xl">
-            <p class="text-[9px] text-center uppercase tracking-widest text-[#D4AF37] mb-6">Tráfico por Hora</p>
-            <canvas id="trafficChart"></canvas>
         </div>
     </div>
 
     <script>
-        // --- LÓGICA DE DATOS REALES ---
-        let stats = { miembros: 0, visitas: 0 };
+        // --- BASE DE DATOS LOCAL ---
+        let dataLog = [];
+        let stats = { M: 0, F: 0, total: 0, villas: new Set() };
 
-        function registrar(tipo, accion) {
+        // Reloj en tiempo real
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('live-clock').innerText = now.toLocaleDateString() + ' | ' + now.toLocaleTimeString();
+        }, 1000);
+
+        function procesar(tipo, accion) {
+            const villa = document.getElementById('input-villa').value || "N/A";
+            const genero = document.getElementById('input-genero').value;
+            const fecha = new Date().toLocaleDateString();
             const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            // Actualizar Estadísticas
-            if (tipo === 'Miembro' && accion === 'Entrada') stats.miembros++;
-            if (tipo === 'Visitante' && accion === 'Entrada') stats.visitas++;
 
-            // Agregar al Log Visual
+            // Guardar Data
+            const registro = { tipo, accion, villa, genero, fecha, hora };
+            dataLog.unshift(registro);
+
+            // Actualizar Estadísticas (Solo si es Entrada)
+            if (accion === 'Entrada') {
+                stats[genero]++;
+                stats.total++;
+                if (villa !== "N/A") stats.villas.add(villa);
+            }
+
+            actualizarInterfaz();
+            document.getElementById('input-villa').value = ''; // Limpiar campo
+        }
+
+        function actualizarInterfaz() {
             const log = document.getElementById('log-actividad');
-            if (log.innerText.includes('Esperando')) log.innerHTML = '';
-            
-            const entry = document.createElement('div');
-            entry.className = "flex justify-between p-3 bg-white/5 border border-white/10 rounded-xl animate-scale-in";
-            entry.innerHTML = `
-                <span class="font-bold ${tipo === 'Miembro' ? 'text-[#D4AF37]' : 'text-white'}">${tipo.toUpperCase()}</span>
-                <span class="opacity-40">${accion}</span>
-                <span class="font-mono text-[9px] opacity-60">${hora}</span>
-            `;
-            log.prepend(entry);
-            
-            // Notificación sutil
-            console.log(`Registro guardado: ${tipo} ${accion}`);
+            log.innerHTML = '';
+
+            dataLog.slice(0, 10).forEach(r => {
+                const div = document.createElement('div');
+                div.className = "p-3 glass-card rounded-xl border-white/5 flex flex-col space-y-1";
+                div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-[#D4AF37] tracking-wider">${r.tipo.toUpperCase()}</span>
+                        <span class="text-[8px] bg-white/10 px-2 py-0.5 rounded text-white">${r.accion}</span>
+                    </div>
+                    <div class="flex justify-between opacity-60 text-[8px] uppercase tracking-tighter">
+                        <span>📍 ${r.villa} | Género: ${r.genero}</span>
+                        <span>📅 ${r.fecha} - ${r.hora}</span>
+                    </div>
+                `;
+                log.appendChild(div);
+            });
         }
 
         function switchTab(tab) {
             const reg = document.getElementById('section-registro');
             const rep = document.getElementById('section-reporte');
-            const btnReg = document.getElementById('btn-reg');
-            const btnRep = document.getElementById('btn-rep');
+            const bReg = document.getElementById('btn-reg');
+            const bRep = document.getElementById('btn-rep');
 
             if (tab === 'registro') {
                 reg.classList.remove('hidden'); rep.classList.add('hidden');
-                btnReg.classList.add('text-[#D4AF37]', 'border-[#D4AF37]');
-                btnRep.classList.remove('text-[#D4AF37]', 'border-[#D4AF37]');
+                bReg.classList.add('tab-active'); bReg.classList.remove('text-white/40');
+                bRep.classList.remove('tab-active'); bRep.classList.add('text-white/40');
             } else {
                 reg.classList.add('hidden'); rep.classList.remove('hidden');
-                btnRep.classList.add('text-[#D4AF37]', 'border-[#D4AF37]');
-                btnReg.classList.remove('text-[#D4AF37]', 'border-[#D4AF37]');
+                bRep.classList.add('tab-active'); bRep.classList.remove('text-white/40');
+                bReg.classList.remove('tab-active'); bReg.classList.add('text-white/40');
                 
-                // Actualizar KPIs del reporte
-                document.getElementById('kpi-miembros').innerText = stats.miembros;
-                document.getElementById('kpi-visitas').innerText = stats.visitas;
-                renderCharts();
+                // Actualizar Reporte
+                document.getElementById('kpi-m').innerText = stats.M;
+                document.getElementById('kpi-f').innerText = stats.F;
+                document.getElementById('kpi-total').innerText = stats.total;
+                document.getElementById('kpi-villas').innerText = stats.villas.size;
+                initCharts();
             }
         }
 
-        function renderCharts() {
-            const ctx = document.getElementById('trafficChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
+        function initCharts() {
+            // Gráfica de Género
+            const ctxG = document.getElementById('genderChart').getContext('2d');
+            if (window.gChart) window.gChart.destroy();
+            window.gChart = new Chart(ctxG, {
+                type: 'doughnut',
                 data: {
-                    labels: ['8am', '12pm', '4pm', '8pm'],
+                    labels: ['Masc', 'Fem'],
                     datasets: [{
-                        data: [stats.miembros + 5, stats.visitas + 10, stats.miembros, 2], // Datos dinámicos + base
-                        borderColor: '#D4AF37',
-                        backgroundColor: 'rgba(212, 175, 55, 0.1)',
-                        fill: true,
-                        tension: 0.4
+                        data: [stats.M, stats.F],
+                        backgroundColor: ['#D4AF37', '#ffffff'],
+                        borderWidth: 0
                     }]
                 },
-                options: {
-                    plugins: { legend: { display: false } },
-                    scales: { y: { display: false }, x: { grid: { display: false }, ticks: { color: '#ffffff50', size: 8 } } }
-                }
+                options: { plugins: { legend: { position: 'bottom', labels: { color: '#fff', font: { size: 9 } } } } }
             });
         }
     </script>
