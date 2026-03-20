@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign Ops Intelligence | Control Total</title>
+    <title>Sovereign Ops | Intelligent Villa Tracking</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,99 +12,68 @@
         .gold-border { border-color: #D4AF37; }
         .gold-text { color: #D4AF37; }
         .bg-navy-light { background-color: rgba(255, 255, 255, 0.05); }
-        .input-style { background-color: white; color: #1a1a1a; border-radius: 4px; padding: 8px; width: 100%; border: 1px solid #D4AF37; font-size: 0.9rem; }
-        .btn-primary { background-color: #D4AF37; color: #001a4d; font-weight: bold; }
-        .btn-primary:hover { background-color: #B8962E; transform: translateY(-1px); }
-        .btn-outline { border: 1px solid #D4AF37; color: #D4AF37; font-weight: bold; }
-        .chart-container { position: relative; height: 200px; width: 100%; }
+        .input-style { background-color: white; color: #1a1a1a; border-radius: 4px; padding: 6px; width: 100%; border: 1px solid #D4AF37; font-size: 0.85rem; }
+        .btn-primary { background-color: #D4AF37; color: #001a4d; font-weight: bold; cursor: pointer; }
+        .villa-card { border-left: 4px solid #D4AF37; background: rgba(255,255,255,0.05); transition: all 0.3s; }
+        .villa-card:hover { background: rgba(212, 175, 55, 0.1); }
     </style>
 </head>
-<body class="p-4 md:p-8">
-    <div class="max-w-6xl mx-auto border-t-4 gold-border bg-navy-light p-6 rounded-b-lg shadow-2xl">
+<body class="p-4 md:p-6">
+    <div class="max-w-7xl mx-auto border-t-4 gold-border bg-navy-light p-6 rounded-b-lg shadow-2xl">
         <header class="text-center mb-6">
             <h1 class="text-2xl font-light tracking-[0.2em] gold-text uppercase">Sovereign Ops Intelligence</h1>
-            <p class="text-[10px] uppercase tracking-widest opacity-70 mt-1">Módulo Avanzado de Logística y Seguridad</p>
+            <p class="text-[10px] uppercase tracking-widest opacity-70">Control de Ocupación por Unidades Residenciales</p>
         </header>
         
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="space-y-4 bg-black/20 p-4 rounded border border-white/5">
-                <h2 class="text-sm font-bold border-b gold-border pb-1 uppercase gold-text">Registro de Miembros</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div class="lg:col-span-1 space-y-4 bg-black/20 p-4 rounded border border-white/5">
+                <h2 class="text-xs font-bold border-b gold-border pb-1 uppercase gold-text">Ingreso de Datos</h2>
+                
                 <div>
-                    <label class="block text-[10px] uppercase mb-1">Llegadas (M/F) & Villas:</label>
-                    <div class="flex gap-2 mb-2">
-                        <input type="number" id="llegadaM" placeholder="M" class="input-style">
-                        <input type="number" id="llegadaF" placeholder="F" class="input-style">
-                    </div>
-                    <input type="text" id="villasLlegada" placeholder="Villas destino" class="input-style">
+                    <label class="block text-[10px] uppercase mb-1">ID de Villa:</label>
+                    <input type="text" id="idVilla" placeholder="Ej: Villa 05" class="input-style font-bold">
                 </div>
-                <div>
-                    <label class="block text-[10px] uppercase mb-1">Actividad OP Fuera (M/F) & Villas:</label>
-                    <div class="flex gap-2 mb-2">
-                        <input type="number" id="opM" placeholder="M" class="input-style">
-                        <input type="number" id="opF" placeholder="F" class="input-style">
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[10px] mb-1">MIEMBROS M/F:</label>
+                        <div class="flex gap-1">
+                            <input type="number" id="miemM" placeholder="M" class="input-style">
+                            <input type="number" id="miemF" placeholder="F" class="input-style">
+                        </div>
                     </div>
-                    <input type="text" id="villasOP" placeholder="Villas origen" class="input-style">
+                    <div>
+                        <label class="block text-[10px] mb-1">VISITAS M/F:</label>
+                        <div class="flex gap-1">
+                            <input type="number" id="visM" placeholder="M" class="input-style">
+                            <input type="number" id="visF" placeholder="F" class="input-style">
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-[10px] uppercase mb-1">Retiros (M/F):</label>
-                    <div class="flex gap-2">
-                        <input type="number" id="salidaM" placeholder="M" class="input-style">
-                        <input type="number" id="salidaF" placeholder="F" class="input-style">
-                    </div>
+
+                <div class="pt-2 space-y-2">
+                    <button onclick="registrarVilla()" class="w-full btn-primary py-3 rounded uppercase text-[10px] tracking-widest shadow-lg">Registrar / Actualizar Villa</button>
+                    <button onclick="exportarPDF()" class="w-full border border-white/20 py-2 rounded uppercase text-[9px] opacity-70 hover:opacity-100">Exportar PDF General</button>
+                    <button onclick="location.reload()" class="w-full text-red-400 text-[9px] uppercase mt-2 opacity-50">Limpiar Todo</button>
                 </div>
             </div>
 
-            <div class="space-y-4 bg-black/20 p-4 rounded border border-white/5">
-                <h2 class="text-sm font-bold border-b gold-border pb-1 uppercase gold-text">Control de Visitas</h2>
-                <div>
-                    <label class="block text-[10px] uppercase mb-1">Entrada de Visitas (M/F):</label>
-                    <div class="flex gap-2">
-                        <input type="number" id="visEntradaM" placeholder="Masc" class="input-style">
-                        <input type="number" id="visEntradaF" placeholder="Fem" class="input-style">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-[10px] uppercase mb-1">Salida de Visitas (M/F):</label>
-                    <div class="flex gap-2">
-                        <input type="number" id="visSalidaM" placeholder="Masc" class="input-style">
-                        <input type="number" id="visSalidaF" placeholder="Fem" class="input-style">
-                    </div>
-                </div>
-                <div class="pt-4 space-y-2">
-                    <button onclick="calcularReporte()" class="w-full btn-primary py-3 rounded uppercase text-xs tracking-widest shadow-lg">Actualizar Inteligencia</button>
-                    <button onclick="exportarPDF()" class="w-full btn-outline py-2 rounded uppercase text-[10px] tracking-widest">Exportar PDF</button>
-                    <button onclick="limpiarFormulario()" class="w-full text-red-400 text-[9px] uppercase mt-2 opacity-50 hover:opacity-100">Reiniciar Turno</button>
-                </div>
-            </div>
-
-            <div class="bg-black/30 p-4 rounded border border-gold/20 flex flex-col justify-between">
-                <h2 class="text-sm font-bold border-b gold-border pb-1 uppercase gold-text mb-4 text-center">Estado de Propiedad</h2>
-                <div class="chart-container">
+            <div class="lg:col-span-1 bg-black/30 p-4 rounded border border-gold/20">
+                <h2 class="text-xs font-bold border-b gold-border pb-1 uppercase gold-text mb-4 text-center">Estado Global</h2>
+                <div style="height: 180px;">
                     <canvas id="opsChart"></canvas>
                 </div>
-                <div id="resumenRapido" class="mt-4 text-center space-y-1">
-                    <p id="totalGral" class="text-2xl font-bold">0</p>
-                    <p class="text-[10px] uppercase opacity-60">Personas Totales en Perímetro</p>
+                <div class="mt-4 text-center">
+                    <p id="totalGral" class="text-3xl font-bold">0</p>
+                    <p class="text-[9px] uppercase opacity-60">Total de Personas en Propiedad</p>
                 </div>
             </div>
-        </div>
 
-        <div id="resultados" class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 hidden border-t gold-border pt-6">
-            <div class="p-3 bg-white/5 rounded">
-                <p class="text-[10px] uppercase gold-text">Miembros Activos</p>
-                <p id="resMiem" class="text-lg">0</p>
-            </div>
-            <div class="p-3 bg-white/5 rounded">
-                <p class="text-[10px] uppercase gold-text">Visitas Activas</p>
-                <p id="resVis" class="text-lg">0</p>
-            </div>
-            <div class="p-3 bg-white/5 rounded">
-                <p class="text-[10px] uppercase gold-text">Total Masculinos</p>
-                <p id="resM" class="text-lg">0</p>
-            </div>
-            <div class="p-3 bg-white/5 rounded">
-                <p class="text-[10px] uppercase gold-text">Total Femeninos</p>
-                <p id="resF" class="text-lg">0</p>
+            <div class="lg:col-span-2 space-y-4">
+                <h2 class="text-xs font-bold border-b gold-border pb-1 uppercase gold-text">Ocupación por Villa</h2>
+                <div id="contenedorVillas" class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[500px] overflow-y-auto pr-2">
+                    <p class="text-xs opacity-40 italic">No hay villas registradas aún...</p>
+                </div>
             </div>
         </div>
     </div>
