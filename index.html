@@ -3,94 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign Ops Intelligence | Control de Propiedad</title>
+    <title>Sovereign Ops Intelligence | Control Total</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { background-color: #001a4d; color: #fdfdfd; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #001a4d; color: #fdfdfd; font-family: 'Segoe UI', sans-serif; }
         .gold-border { border-color: #D4AF37; }
         .gold-text { color: #D4AF37; }
         .bg-navy-light { background-color: rgba(255, 255, 255, 0.05); }
-        .input-style { background-color: white; color: #1a1a1a; border-radius: 4px; padding: 8px; width: 100%; border: 1px solid #D4AF37; }
-        .btn-primary { background-color: #D4AF37; color: #001a4d; font-weight: bold; transition: all 0.3s; }
+        .input-style { background-color: white; color: #1a1a1a; border-radius: 4px; padding: 8px; width: 100%; border: 1px solid #D4AF37; font-size: 0.9rem; }
+        .btn-primary { background-color: #D4AF37; color: #001a4d; font-weight: bold; }
         .btn-primary:hover { background-color: #B8962E; transform: translateY(-1px); }
-        .btn-outline { border: 1px solid #D4AF37; color: #D4AF37; font-weight: bold; transition: all 0.3s; }
-        .btn-outline:hover { background-color: rgba(212, 175, 55, 0.1); }
-        .btn-danger { border: 1px solid #ff4d4d; color: #ff4d4d; font-size: 0.75rem; margin-top: 20px; opacity: 0.6; }
-        .btn-danger:hover { opacity: 1; background-color: rgba(255, 77, 77, 0.1); }
+        .btn-outline { border: 1px solid #D4AF37; color: #D4AF37; font-weight: bold; }
+        .chart-container { position: relative; height: 200px; width: 100%; }
     </style>
 </head>
-<body class="p-4 md:p-10">
-    <div class="max-w-5xl mx-auto border-t-4 gold-border bg-navy-light p-6 rounded-b-lg shadow-2xl">
-        <header class="text-center mb-8">
-            <h1 class="text-3xl font-light tracking-[0.2em] gold-text uppercase">Sovereign Ops Intelligence</h1>
-            <p class="text-xs uppercase tracking-widest opacity-70 mt-2">Logística de Miembros & Control de Visitas</p>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto border-t-4 gold-border bg-navy-light p-6 rounded-b-lg shadow-2xl">
+        <header class="text-center mb-6">
+            <h1 class="text-2xl font-light tracking-[0.2em] gold-text uppercase">Sovereign Ops Intelligence</h1>
+            <p class="text-[10px] uppercase tracking-widest opacity-70 mt-1">Módulo Avanzado de Logística y Seguridad</p>
         </header>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="space-y-6">
-                <h2 class="text-lg font-semibold border-b gold-border pb-2 uppercase tracking-wider">Registro de Miembros</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="space-y-4 bg-black/20 p-4 rounded border border-white/5">
+                <h2 class="text-sm font-bold border-b gold-border pb-1 uppercase gold-text">Registro de Miembros</h2>
                 <div>
-                    <label class="block text-xs uppercase mb-1 opacity-80">Llegadas (Villas de destino):</label>
-                    <input type="text" id="villasLlegada" placeholder="Ej: 10, 15, 22" class="input-style mb-2">
-                    <div class="flex gap-2">
-                        <input type="number" id="llegadaM" placeholder="Masc" class="input-style">
-                        <input type="number" id="llegadaF" placeholder="Fem" class="input-style">
+                    <label class="block text-[10px] uppercase mb-1">Llegadas (M/F) & Villas:</label>
+                    <div class="flex gap-2 mb-2">
+                        <input type="number" id="llegadaM" placeholder="M" class="input-style">
+                        <input type="number" id="llegadaF" placeholder="F" class="input-style">
                     </div>
+                    <input type="text" id="villasLlegada" placeholder="Villas destino" class="input-style">
                 </div>
                 <div>
-                    <label class="block text-xs uppercase mb-1 opacity-80">Salidas/Retiros (Villas origen):</label>
-                    <input type="text" id="villasSalida" placeholder="Ej: 5, 12" class="input-style mb-2">
-                    <div class="flex gap-2">
-                        <input type="number" id="salidaM" placeholder="Masc" class="input-style">
-                        <input type="number" id="salidaF" placeholder="Fem" class="input-style">
+                    <label class="block text-[10px] uppercase mb-1">Actividad OP Fuera (M/F) & Villas:</label>
+                    <div class="flex gap-2 mb-2">
+                        <input type="number" id="opM" placeholder="M" class="input-style">
+                        <input type="number" id="opF" placeholder="F" class="input-style">
                     </div>
+                    <input type="text" id="villasOP" placeholder="Villas origen" class="input-style">
                 </div>
                 <div>
-                    <label class="block text-xs uppercase mb-1 opacity-80">Actividades OP Fuera (Villas):</label>
-                    <input type="text" id="villasOP" placeholder="Ej: 8, 21" class="input-style mb-2">
+                    <label class="block text-[10px] uppercase mb-1">Retiros (M/F):</label>
                     <div class="flex gap-2">
-                        <input type="number" id="opM" placeholder="Masc" class="input-style">
-                        <input type="number" id="opF" placeholder="Fem" class="input-style">
+                        <input type="number" id="salidaM" placeholder="M" class="input-style">
+                        <input type="number" id="salidaF" placeholder="F" class="input-style">
                     </div>
                 </div>
             </div>
 
-            <div class="space-y-6">
-                <h2 class="text-lg font-semibold border-b gold-border pb-2 uppercase tracking-wider">Control de Visitas</h2>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs uppercase mb-1 opacity-80">Entrada Visitas:</label>
-                        <input type="number" id="visitaEntrada" class="input-style">
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase mb-1 opacity-80">Salida Visitas:</label>
-                        <input type="number" id="visitaSalida" class="input-style">
+            <div class="space-y-4 bg-black/20 p-4 rounded border border-white/5">
+                <h2 class="text-sm font-bold border-b gold-border pb-1 uppercase gold-text">Control de Visitas</h2>
+                <div>
+                    <label class="block text-[10px] uppercase mb-1">Entrada de Visitas (M/F):</label>
+                    <div class="flex gap-2">
+                        <input type="number" id="visEntradaM" placeholder="Masc" class="input-style">
+                        <input type="number" id="visEntradaF" placeholder="Fem" class="input-style">
                     </div>
                 </div>
-                <div class="pt-4 space-y-3">
-                    <button onclick="calcularReporte()" class="w-full btn-primary py-4 rounded uppercase tracking-widest shadow-lg">Generar Reporte en Pantalla</button>
-                    <button onclick="exportarPDF()" class="w-full btn-outline py-3 rounded uppercase text-sm tracking-widest">Descargar PDF Ejecutivo</button>
-                    <button onclick="limpiarFormulario()" class="w-full btn-danger py-2 rounded uppercase tracking-tighter">Limpiar Todo</button>
+                <div>
+                    <label class="block text-[10px] uppercase mb-1">Salida de Visitas (M/F):</label>
+                    <div class="flex gap-2">
+                        <input type="number" id="visSalidaM" placeholder="Masc" class="input-style">
+                        <input type="number" id="visSalidaF" placeholder="Fem" class="input-style">
+                    </div>
+                </div>
+                <div class="pt-4 space-y-2">
+                    <button onclick="calcularReporte()" class="w-full btn-primary py-3 rounded uppercase text-xs tracking-widest shadow-lg">Actualizar Inteligencia</button>
+                    <button onclick="exportarPDF()" class="w-full btn-outline py-2 rounded uppercase text-[10px] tracking-widest">Exportar PDF</button>
+                    <button onclick="limpiarFormulario()" class="w-full text-red-400 text-[9px] uppercase mt-2 opacity-50 hover:opacity-100">Reiniciar Turno</button>
+                </div>
+            </div>
+
+            <div class="bg-black/30 p-4 rounded border border-gold/20 flex flex-col justify-between">
+                <h2 class="text-sm font-bold border-b gold-border pb-1 uppercase gold-text mb-4 text-center">Estado de Propiedad</h2>
+                <div class="chart-container">
+                    <canvas id="opsChart"></canvas>
+                </div>
+                <div id="resumenRapido" class="mt-4 text-center space-y-1">
+                    <p id="totalGral" class="text-2xl font-bold">0</p>
+                    <p class="text-[10px] uppercase opacity-60">Personas Totales en Perímetro</p>
                 </div>
             </div>
         </div>
 
-        <div id="resultados" class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 hidden border-t gold-border pt-8">
-            <div class="p-4 rounded border border-white/10 bg-black/20">
-                <h3 class="gold-text text-sm font-bold uppercase mb-3">Estado Miembros</h3>
-                <p id="resMiembrosPropiedad" class="text-xl font-light">En Propiedad: 0</p>
-                <p id="resMiembrosFuera" class="text-sm opacity-70">En Actividad OP: 0</p>
-                <p id="resRetirados" class="text-sm opacity-70">Total Retirados: 0</p>
+        <div id="resultados" class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 hidden border-t gold-border pt-6">
+            <div class="p-3 bg-white/5 rounded">
+                <p class="text-[10px] uppercase gold-text">Miembros Activos</p>
+                <p id="resMiem" class="text-lg">0</p>
             </div>
-            <div class="p-4 rounded border border-white/10 bg-black/20">
-                <h3 class="gold-text text-sm font-bold uppercase mb-3">Desglose Género</h3>
-                <p id="resGeneroM" class="text-lg">Masculinos: 0</p>
-                <p id="resGeneroF" class="text-lg">Femeninos: 0</p>
+            <div class="p-3 bg-white/5 rounded">
+                <p class="text-[10px] uppercase gold-text">Visitas Activas</p>
+                <p id="resVis" class="text-lg">0</p>
             </div>
-            <div class="p-4 rounded border border-white/10 bg-black/20 text-center">
-                <h3 class="gold-text text-sm font-bold uppercase mb-3">Visitas en Propiedad</h3>
-                <p id="resVisitasDentro" class="text-4xl font-bold">0</p>
+            <div class="p-3 bg-white/5 rounded">
+                <p class="text-[10px] uppercase gold-text">Total Masculinos</p>
+                <p id="resM" class="text-lg">0</p>
+            </div>
+            <div class="p-3 bg-white/5 rounded">
+                <p class="text-[10px] uppercase gold-text">Total Femeninos</p>
+                <p id="resF" class="text-lg">0</p>
             </div>
         </div>
     </div>
