@@ -16,6 +16,8 @@
         .btn-primary:hover { background-color: #B8962E; transform: translateY(-1px); }
         .btn-outline { border: 1px solid #D4AF37; color: #D4AF37; font-weight: bold; transition: all 0.3s; }
         .btn-outline:hover { background-color: rgba(212, 175, 55, 0.1); }
+        .btn-danger { border: 1px solid #ff4d4d; color: #ff4d4d; font-size: 0.75rem; margin-top: 20px; opacity: 0.6; }
+        .btn-danger:hover { opacity: 1; background-color: rgba(255, 77, 77, 0.1); }
     </style>
 </head>
 <body class="p-4 md:p-10">
@@ -28,7 +30,6 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="space-y-6">
                 <h2 class="text-lg font-semibold border-b gold-border pb-2 uppercase tracking-wider">Registro de Miembros</h2>
-                
                 <div>
                     <label class="block text-xs uppercase mb-1 opacity-80">Llegadas (Villas de destino):</label>
                     <input type="text" id="villasLlegada" placeholder="Ej: 10, 15, 22" class="input-style mb-2">
@@ -37,7 +38,6 @@
                         <input type="number" id="llegadaF" placeholder="Fem" class="input-style">
                     </div>
                 </div>
-
                 <div>
                     <label class="block text-xs uppercase mb-1 opacity-80">Salidas/Retiros (Villas origen):</label>
                     <input type="text" id="villasSalida" placeholder="Ej: 5, 12" class="input-style mb-2">
@@ -46,7 +46,6 @@
                         <input type="number" id="salidaF" placeholder="Fem" class="input-style">
                     </div>
                 </div>
-
                 <div>
                     <label class="block text-xs uppercase mb-1 opacity-80">Actividades OP Fuera (Villas):</label>
                     <input type="text" id="villasOP" placeholder="Ej: 8, 21" class="input-style mb-2">
@@ -69,10 +68,10 @@
                         <input type="number" id="visitaSalida" class="input-style">
                     </div>
                 </div>
-
                 <div class="pt-4 space-y-3">
                     <button onclick="calcularReporte()" class="w-full btn-primary py-4 rounded uppercase tracking-widest shadow-lg">Generar Reporte en Pantalla</button>
                     <button onclick="exportarPDF()" class="w-full btn-outline py-3 rounded uppercase text-sm tracking-widest">Descargar PDF Ejecutivo</button>
+                    <button onclick="limpiarFormulario()" class="w-full btn-danger py-2 rounded uppercase tracking-tighter">Limpiar Todo</button>
                 </div>
             </div>
         </div>
@@ -89,10 +88,9 @@
                 <p id="resGeneroM" class="text-lg">Masculinos: 0</p>
                 <p id="resGeneroF" class="text-lg">Femeninos: 0</p>
             </div>
-            <div class="p-4 rounded border border-white/10 bg-black/20">
-                <h3 class="gold-text text-sm font-bold uppercase mb-3">Balance de Visitas</h3>
-                <p id="resVisitasDentro" class="text-2xl font-bold">0</p>
-                <p class="text-xs uppercase opacity-60">Visitas en Propiedad</p>
+            <div class="p-4 rounded border border-white/10 bg-black/20 text-center">
+                <h3 class="gold-text text-sm font-bold uppercase mb-3">Visitas en Propiedad</h3>
+                <p id="resVisitasDentro" class="text-4xl font-bold">0</p>
             </div>
         </div>
     </div>
