@@ -3,81 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign Intel - Registro de Miembros</title>
+    <title>Sovereign Ops Intelligence | Control de Propiedad</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        body { background-color: #002366; color: #fdfdfd; }
+        body { background-color: #001a4d; color: #fdfdfd; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .gold-border { border-color: #D4AF37; }
         .gold-text { color: #D4AF37; }
-        .btn-gold { background-color: #D4AF37; color: #002366; }
-        .btn-gold:hover { background-color: #B8962E; }
+        .bg-navy-light { background-color: rgba(255, 255, 255, 0.05); }
+        .input-style { background-color: white; color: #1a1a1a; border-radius: 4px; padding: 8px; width: 100%; border: 1px solid #D4AF37; }
+        .btn-primary { background-color: #D4AF37; color: #001a4d; font-weight: bold; transition: all 0.3s; }
+        .btn-primary:hover { background-color: #B8962E; transform: translateY(-1px); }
+        .btn-outline { border: 1px solid #D4AF37; color: #D4AF37; font-weight: bold; transition: all 0.3s; }
+        .btn-outline:hover { background-color: rgba(212, 175, 55, 0.1); }
     </style>
 </head>
-<body class="p-4 md:p-8">
-    <div class="max-w-4xl mx-auto border-2 gold-border p-6 rounded-lg bg-opacity-10 bg-black">
-        <h1 class="text-3xl font-bold mb-6 text-center gold-text uppercase tracking-widest">Control Operativo de Propiedad</h1>
+<body class="p-4 md:p-10">
+    <div class="max-w-5xl mx-auto border-t-4 gold-border bg-navy-light p-6 rounded-b-lg shadow-2xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-light tracking-[0.2em] gold-text uppercase">Sovereign Ops Intelligence</h1>
+            <p class="text-xs uppercase tracking-widest opacity-70 mt-2">Logística de Miembros & Control de Visitas</p>
+        </header>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="space-y-4">
-                <h2 class="text-xl font-semibold border-b gold-border pb-2">Registros de Miembros</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-6">
+                <h2 class="text-lg font-semibold border-b gold-border pb-2 uppercase tracking-wider">Registro de Miembros</h2>
+                
                 <div>
-                    <label class="block text-sm">Llegadas (Villas destino):</label>
-                    <input type="text" id="villasLlegada" placeholder="Ej: 10, 15, 22" class="w-full p-2 rounded text-black">
-                    <div class="flex gap-2 mt-2">
-                        <input type="number" id="llegadaM" placeholder="Masc" class="w-1/2 p-2 rounded text-black">
-                        <input type="number" id="llegadaF" placeholder="Fem" class="w-1/2 p-2 rounded text-black">
+                    <label class="block text-xs uppercase mb-1 opacity-80">Llegadas (Villas de destino):</label>
+                    <input type="text" id="villasLlegada" placeholder="Ej: 10, 15, 22" class="input-style mb-2">
+                    <div class="flex gap-2">
+                        <input type="number" id="llegadaM" placeholder="Masc" class="input-style">
+                        <input type="number" id="llegadaF" placeholder="Fem" class="input-style">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-sm">Salidas/Retiros (Villas origen):</label>
-                    <input type="text" id="villasSalida" placeholder="Ej: 5, 12" class="w-full p-2 rounded text-black">
-                    <div class="flex gap-2 mt-2">
-                        <input type="number" id="salidaM" placeholder="Masc" class="w-1/2 p-2 rounded text-black">
-                        <input type="number" id="salidaF" placeholder="Fem" class="w-1/2 p-2 rounded text-black">
+                    <label class="block text-xs uppercase mb-1 opacity-80">Salidas/Retiros (Villas origen):</label>
+                    <input type="text" id="villasSalida" placeholder="Ej: 5, 12" class="input-style mb-2">
+                    <div class="flex gap-2">
+                        <input type="number" id="salidaM" placeholder="Masc" class="input-style">
+                        <input type="number" id="salidaF" placeholder="Fem" class="input-style">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-sm">Actividades OP Fuera (Villas):</label>
-                    <input type="text" id="villasOP" placeholder="Ej: 8, 21" class="w-full p-2 rounded text-black">
-                    <div class="flex gap-2 mt-2">
-                        <input type="number" id="opM" placeholder="Masc" class="w-1/2 p-2 rounded text-black">
-                        <input type="number" id="opF" placeholder="Fem" class="w-1/2 p-2 rounded text-black">
+                    <label class="block text-xs uppercase mb-1 opacity-80">Actividades OP Fuera (Villas):</label>
+                    <input type="text" id="villasOP" placeholder="Ej: 8, 21" class="input-style mb-2">
+                    <div class="flex gap-2">
+                        <input type="number" id="opM" placeholder="Masc" class="input-style">
+                        <input type="number" id="opF" placeholder="Fem" class="input-style">
                     </div>
                 </div>
             </div>
 
-            <div class="space-y-4">
-                <h2 class="text-xl font-semibold border-b gold-border pb-2">Control de Visitas</h2>
-                <div>
-                    <label class="block text-sm">Entrada de Visitas:</label>
-                    <input type="number" id="visitaEntrada" class="w-full p-2 rounded text-black">
+            <div class="space-y-6">
+                <h2 class="text-lg font-semibold border-b gold-border pb-2 uppercase tracking-wider">Control de Visitas</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs uppercase mb-1 opacity-80">Entrada Visitas:</label>
+                        <input type="number" id="visitaEntrada" class="input-style">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase mb-1 opacity-80">Salida Visitas:</label>
+                        <input type="number" id="visitaSalida" class="input-style">
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm">Salida de Visitas:</label>
-                    <input type="number" id="visitaSalida" class="w-full p-2 rounded text-black">
+
+                <div class="pt-4 space-y-3">
+                    <button onclick="calcularReporte()" class="w-full btn-primary py-4 rounded uppercase tracking-widest shadow-lg">Generar Reporte en Pantalla</button>
+                    <button onclick="exportarPDF()" class="w-full btn-outline py-3 rounded uppercase text-sm tracking-widest">Descargar PDF Ejecutivo</button>
                 </div>
-                
-                <button onclick="calcularReporte()" class="w-full btn-gold font-bold py-4 rounded transition mt-4 uppercase">Generar Reporte de Operaciones</button>
             </div>
         </div>
 
-        <div id="resultados" class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 hidden">
-            <div class="p-4 border gold-border rounded bg-white bg-opacity-5">
-                <h3 class="gold-text font-bold">Estado Miembros</h3>
-                <p id="resMiembrosPropiedad">En Propiedad: 0</p>
-                <p id="resMiembrosFuera">En OP Fuera: 0</p>
-                <p id="resRetirados">Total Retirados: 0</p>
+        <div id="resultados" class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 hidden border-t gold-border pt-8">
+            <div class="p-4 rounded border border-white/10 bg-black/20">
+                <h3 class="gold-text text-sm font-bold uppercase mb-3">Estado Miembros</h3>
+                <p id="resMiembrosPropiedad" class="text-xl font-light">En Propiedad: 0</p>
+                <p id="resMiembrosFuera" class="text-sm opacity-70">En Actividad OP: 0</p>
+                <p id="resRetirados" class="text-sm opacity-70">Total Retirados: 0</p>
             </div>
-            <div class="p-4 border gold-border rounded bg-white bg-opacity-5">
-                <h3 class="gold-text font-bold">Desglose Género</h3>
-                <p id="resGeneroM">Masculinos: 0</p>
-                <p id="resGeneroF">Femeninos: 0</p>
+            <div class="p-4 rounded border border-white/10 bg-black/20">
+                <h3 class="gold-text text-sm font-bold uppercase mb-3">Desglose Género</h3>
+                <p id="resGeneroM" class="text-lg">Masculinos: 0</p>
+                <p id="resGeneroF" class="text-lg">Femeninos: 0</p>
             </div>
-            <div class="p-4 border gold-border rounded bg-white bg-opacity-5">
-                <h3 class="gold-text font-bold">Control Visitas</h3>
-                <p id="resVisitasDentro">Visitas en Propiedad: 0</p>
+            <div class="p-4 rounded border border-white/10 bg-black/20">
+                <h3 class="gold-text text-sm font-bold uppercase mb-3">Balance de Visitas</h3>
+                <p id="resVisitasDentro" class="text-2xl font-bold">0</p>
+                <p class="text-xs uppercase opacity-60">Visitas en Propiedad</p>
             </div>
         </div>
     </div>
