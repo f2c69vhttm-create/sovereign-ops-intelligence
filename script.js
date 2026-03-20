@@ -1,29 +1,64 @@
+let myChart;
+
 function calcularReporte() {
-    const inputs = {
-        llegadaM: parseInt(document.getElementById('llegadaM').value) || 0,
-        llegadaF: parseInt(document.getElementById('llegadaF').value) || 0,
-        salidaM: parseInt(document.getElementById('salidaM').value) || 0,
-        salidaF: parseInt(document.getElementById('salidaF').value) || 0,
-        opM: parseInt(document.getElementById('opM').value) || 0,
-        opF: parseInt(document.getElementById('opF').value) || 0,
-        visitaE: parseInt(document.getElementById('visitaEntrada').value) || 0,
-        visitaS: parseInt(document.getElementById('visitaSalida').value) || 0
+    // 1. Captura de datos
+    const d = {
+        lM: parseInt(document.getElementById('llegadaM').value) || 0,
+        lF: parseInt(document.getElementById('llegadaF').value) || 0,
+        oM: parseInt(document.getElementById('opM').value) || 0,
+        oF: parseInt(document.getElementById('opF').value) || 0,
+        sM: parseInt(document.getElementById('salidaM').value) || 0,
+        sF: parseInt(document.getElementById('salidaF').value) || 0,
+        veM: parseInt(document.getElementById('visEntradaM').value) || 0,
+        veF: parseInt(document.getElementById('visEntradaF').value) || 0,
+        vsM: parseInt(document.getElementById('visSalidaM').value) || 0,
+        vsF: parseInt(document.getElementById('visSalidaF').value) || 0
     };
 
-    const totalEnPropiedadM = (inputs.llegadaM) - (inputs.salidaM + inputs.opM);
-    const totalEnPropiedadF = (inputs.llegadaF) - (inputs.salidaF + inputs.opF);
-    const totalGlobalMiembros = totalEnPropiedadM + totalEnPropiedadF;
-    const totalFueraOP = inputs.opM + inputs.opF;
-    const totalRetirados = inputs.salidaM + inputs.salidaF;
-    const balanceVisitas = inputs.visitaE - inputs.visitaS;
+    // 2. Cálculos de Miembros y Visitas por Género
+    const miembrosM = d.lM - d.oM - d.sM;
+    const miembrosF = d.lF - d.oF - d.sF;
+    const visitasM = d.veM - d.vsM;
+    const visitasF = d.veF - d.vsF;
 
+    const totalM = miembrosM + visitasM;
+    const totalF = miembrosF + visitasF;
+    const totalGral = totalM + totalF;
+
+    // 3. Actualizar Interfaz
     document.getElementById('resultados').classList.remove('hidden');
-    document.getElementById('resMiembrosPropiedad').innerText = `En Propiedad: ${totalGlobalMiembros}`;
-    document.getElementById('resMiembrosFuera').innerText = `En Actividad OP: ${totalFueraOP}`;
-    document.getElementById('resRetirados').innerText = `Total Retirados: ${totalRetirados}`;
-    document.getElementById('resGeneroM').innerText = `Masculinos: ${totalEnPropiedadM}`;
-    document.getElementById('resGeneroF').innerText = `Femeninos: ${totalEnPropiedadF}`;
-    document.getElementById('resVisitasDentro').innerText = balanceVisitas;
+    document.getElementById('resMiem').innerText = miembrosM + miembrosF;
+    document.getElementById('resVis').innerText = visitasM + visitasF;
+    document.getElementById('resM').innerText = totalM;
+    document.getElementById('resF').innerText = totalF;
+    document.getElementById('totalGral').innerText = totalGral;
+
+    // 4. Actualizar Gráfico
+    updateChart(miembrosM + miembrosF, visitasM + visitasF, d.oM + d.oF);
+}
+
+function updateChart(miembros, visitas, fuera) {
+    const ctx = document.getElementById('opsChart').getContext('2d');
+    if (myChart) myChart.destroy();
+
+    myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['En Villa', 'Visitas', 'Actividad OP'],
+            datasets: [{
+                data: [miembros, visitas, fuera],
+                backgroundColor: ['#D4AF37', '#ffffff', '#003399'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { color: '#fff', font: { size: 10 } } }
+            }
+        }
+    });
 }
 
 window.exportarPDF = function() {
@@ -32,37 +67,27 @@ window.exportarPDF = function() {
     const ahora = new Date();
     
     doc.setFillColor(0, 26, 77);
-    doc.rect(0, 0, 210, 45, 'F');
+    doc.rect(0, 0, 210, 40, 'F');
     doc.setTextColor(212, 175, 55);
-    doc.setFontSize(20);
-    doc.text("SOVEREIGN OPS INTELLIGENCE", 105, 20, { align: "center" });
+    doc.setFontSize(18);
+    doc.text("SOVEREIGN OPS INTELLIGENCE", 105, 18, { align: "center" });
     doc.setTextColor(255, 255, 255);
-    doc.setFontSize(10);
-    doc.text(`REPORTE LOGÍSTICO - ${ahora.toLocaleString()}`, 105, 32, { align: "center" });
-
-    const datos = {
-        vL: document.getElementById('villasLlegada').value || "N/A",
-        vO: document.getElementById('villasOP').value || "N/A",
-        vis: document.getElementById('resVisitasDentro').innerText,
-        totalM: document.getElementById('resMiembrosPropiedad').innerText
-    };
+    doc.setFontSize(9);
+    doc.text(`REPORTE DE SEGURIDAD POR GÉNERO - ${ahora.toLocaleString()}`, 105, 28, { align: "center" });
 
     doc.setTextColor(0, 26, 77);
-    doc.setFontSize(14);
-    doc.text("RESUMEN OPERATIVO", 20, 60);
     doc.setFontSize(12);
-    doc.text(`- ${datos.totalM}`, 25, 75);
-    doc.text(`- Miembros en Actividades fuera: ${datos.vO}`, 25, 85);
-    doc.text(`- Villas de llegada hoy: ${datos.vL}`, 25, 95);
-    doc.text(`- Visitas activas en perímetro: ${datos.vis}`, 25, 105);
-
-    doc.save(`Sovereign_Report_${ahora.getTime()}.pdf`);
+    doc.text("DESGLOSE DE OCUPACIÓN:", 20, 55);
+    doc.setFontSize(10);
+    doc.text(`- Miembros en Propiedad: ${document.getElementById('resMiem').innerText}`, 25, 65);
+    doc.text(`- Visitas en Propiedad: ${document.getElementById('resVis').innerText}`, 25, 75);
+    doc.text(`- Distribución por Género: Masc: ${document.getElementById('resM').innerText} / Fem: ${document.getElementById('resF').innerText}`, 25, 85);
+    
+    doc.save(`Sovereign_Full_Report_${ahora.getTime()}.pdf`);
 }
 
 function limpiarFormulario() {
-    if(confirm("¿Está seguro de que desea limpiar todos los datos del turno actual?")) {
-        const ids = ['villasLlegada', 'llegadaM', 'llegadaF', 'villasSalida', 'salidaM', 'salidaF', 'villasOP', 'opM', 'opF', 'visitaEntrada', 'visitaSalida'];
-        ids.forEach(id => document.getElementById(id).value = "");
-        document.getElementById('resultados').classList.add('hidden');
+    if(confirm("Reiniciar todos los campos del turno?")) {
+        location.reload();
     }
 }
