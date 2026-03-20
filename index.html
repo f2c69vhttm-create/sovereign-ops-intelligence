@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign Ops | Intelligent Villa Tracking</title>
+    <title>Sovereign Ops | Full Logistics Tracking</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,68 +12,73 @@
         .gold-border { border-color: #D4AF37; }
         .gold-text { color: #D4AF37; }
         .bg-navy-light { background-color: rgba(255, 255, 255, 0.05); }
-        .input-style { background-color: white; color: #1a1a1a; border-radius: 4px; padding: 6px; width: 100%; border: 1px solid #D4AF37; font-size: 0.85rem; }
+        .input-style { background-color: white; color: #1a1a1a; border-radius: 4px; padding: 5px; width: 100%; border: 1px solid #D4AF37; font-size: 0.8rem; }
         .btn-primary { background-color: #D4AF37; color: #001a4d; font-weight: bold; cursor: pointer; }
-        .villa-card { border-left: 4px solid #D4AF37; background: rgba(255,255,255,0.05); transition: all 0.3s; }
-        .villa-card:hover { background: rgba(212, 175, 55, 0.1); }
+        .villa-card { border-left: 4px solid #D4AF37; background: rgba(255,255,255,0.07); }
+        .section-title { font-size: 0.7rem; font-weight: bold; color: #D4AF37; text-transform: uppercase; margin-bottom: 5px; border-bottom: 1px solid rgba(212,175,55,0.2); }
     </style>
 </head>
-<body class="p-4 md:p-6">
-    <div class="max-w-7xl mx-auto border-t-4 gold-border bg-navy-light p-6 rounded-b-lg shadow-2xl">
+<body class="p-2 md:p-6">
+    <div class="max-w-7xl mx-auto border-t-4 gold-border bg-navy-light p-4 rounded-b-lg shadow-2xl">
         <header class="text-center mb-6">
             <h1 class="text-2xl font-light tracking-[0.2em] gold-text uppercase">Sovereign Ops Intelligence</h1>
-            <p class="text-[10px] uppercase tracking-widest opacity-70">Control de Ocupación por Unidades Residenciales</p>
+            <p class="text-[9px] uppercase tracking-widest opacity-70">Logística Integral: En Propiedad, OP Fuera y Retiros</p>
         </header>
         
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
             <div class="lg:col-span-1 space-y-4 bg-black/20 p-4 rounded border border-white/5">
-                <h2 class="text-xs font-bold border-b gold-border pb-1 uppercase gold-text">Ingreso de Datos</h2>
-                
-                <div>
-                    <label class="block text-[10px] uppercase mb-1">ID de Villa:</label>
-                    <input type="text" id="idVilla" placeholder="Ej: Villa 05" class="input-style font-bold">
+                <div class="mb-4">
+                    <label class="block text-[10px] uppercase gold-text font-bold">ID Villa / Unidad:</label>
+                    <input type="text" id="idVilla" placeholder="Ej: Villa 12" class="input-style font-bold border-2">
                 </div>
 
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-[10px] mb-1">MIEMBROS M/F:</label>
-                        <div class="flex gap-1">
-                            <input type="number" id="miemM" placeholder="M" class="input-style">
-                            <input type="number" id="miemF" placeholder="F" class="input-style">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] mb-1">VISITAS M/F:</label>
-                        <div class="flex gap-1">
-                            <input type="number" id="visM" placeholder="M" class="input-style">
-                            <input type="number" id="visF" placeholder="F" class="input-style">
-                        </div>
+                <div class="p-2 bg-white/5 rounded">
+                    <p class="section-title">En Propiedad (Dentro)</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="number" id="inM" placeholder="Masc" class="input-style">
+                        <input type="number" id="inF" placeholder="Fem" class="input-style">
                     </div>
                 </div>
 
-                <div class="pt-2 space-y-2">
-                    <button onclick="registrarVilla()" class="w-full btn-primary py-3 rounded uppercase text-[10px] tracking-widest shadow-lg">Registrar / Actualizar Villa</button>
-                    <button onclick="exportarPDF()" class="w-full border border-white/20 py-2 rounded uppercase text-[9px] opacity-70 hover:opacity-100">Exportar PDF General</button>
-                    <button onclick="location.reload()" class="w-full text-red-400 text-[9px] uppercase mt-2 opacity-50">Limpiar Todo</button>
+                <div class="p-2 bg-white/5 rounded">
+                    <p class="section-title">Actividad OP (Fuera)</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="number" id="opM" placeholder="Masc" class="input-style">
+                        <input type="number" id="opF" placeholder="Fem" class="input-style">
+                    </div>
+                </div>
+
+                <div class="p-2 bg-white/5 rounded">
+                    <p class="section-title">Retiros / Salidas</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="number" id="outM" placeholder="Masc" class="input-style">
+                        <input type="number" id="outF" placeholder="Fem" class="input-style">
+                    </div>
+                </div>
+
+                <button onclick="registrarVilla()" class="w-full btn-primary py-3 rounded uppercase text-[10px] tracking-widest shadow-lg mt-2">Actualizar Villa</button>
+                <button onclick="exportarPDF()" class="w-full border border-white/20 py-2 rounded uppercase text-[9px] opacity-70 hover:opacity-100">Exportar Reporte PDF</button>
+            </div>
+
+            <div class="lg:col-span-1 bg-black/30 p-4 rounded border border-gold/20 flex flex-col justify-between">
+                <h2 class="text-xs font-bold uppercase gold-text mb-4 text-center">Balance Logístico</h2>
+                <div style="height: 200px;"><canvas id="opsChart"></canvas></div>
+                <div class="mt-4 grid grid-cols-2 gap-2 text-center border-t border-white/10 pt-4">
+                    <div>
+                        <p id="tPropiedad" class="text-xl font-bold">0</p>
+                        <p class="text-[8px] uppercase opacity-60">En Propiedad</p>
+                    </div>
+                    <div>
+                        <p id="tFuera" class="text-xl font-bold text-blue-400">0</p>
+                        <p class="text-[8px] uppercase opacity-60">En Actividad OP</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="lg:col-span-1 bg-black/30 p-4 rounded border border-gold/20">
-                <h2 class="text-xs font-bold border-b gold-border pb-1 uppercase gold-text mb-4 text-center">Estado Global</h2>
-                <div style="height: 180px;">
-                    <canvas id="opsChart"></canvas>
-                </div>
-                <div class="mt-4 text-center">
-                    <p id="totalGral" class="text-3xl font-bold">0</p>
-                    <p class="text-[9px] uppercase opacity-60">Total de Personas en Propiedad</p>
-                </div>
-            </div>
-
-            <div class="lg:col-span-2 space-y-4">
-                <h2 class="text-xs font-bold border-b gold-border pb-1 uppercase gold-text">Ocupación por Villa</h2>
-                <div id="contenedorVillas" class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[500px] overflow-y-auto pr-2">
-                    <p class="text-xs opacity-40 italic">No hay villas registradas aún...</p>
-                </div>
+            <div class="lg:col-span-2">
+                <h2 class="text-xs font-bold uppercase gold-text mb-2 px-2">Estatus por Villa</h2>
+                <div id="contenedorVillas" class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-[550px] overflow-y-auto p-2">
+                    </div>
             </div>
         </div>
     </div>
