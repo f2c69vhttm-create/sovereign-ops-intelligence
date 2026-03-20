@@ -1,93 +1,89 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sovereign Ops | Intelligence Suite</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { background-color: #001a4d; color: #fdfdfd; font-family: 'Segoe UI', sans-serif; }
-        .gold-border { border-color: #D4AF37; }
-        .gold-text { color: #D4AF37; }
-        .input-style { background-color: white; color: #1a1a1a; border-radius: 4px; padding: 5px; width: 100%; border: 1px solid #D4AF37; font-size: 0.8rem; }
-        .btn-primary { background-color: #D4AF37; color: #001a4d; font-weight: bold; }
-        .section-label { font-size: 0.6rem; font-weight: bold; text-transform: uppercase; margin-bottom: 2px; display: block; }
-    </style>
-</head>
-<body class="p-2 md:p-6">
-    <div class="max-w-7xl mx-auto border-t-4 gold-border bg-white/5 p-4 rounded-b-lg shadow-2xl">
-        <header class="text-center mb-6">
-            <h1 class="text-2xl font-light tracking-[0.2em] gold-text uppercase">Sovereign Ops Intelligence</h1>
-            <p class="text-[9px] uppercase tracking-widest opacity-70">Control de Miembros, Visitas y Logística Externa</p>
-        </header>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
-            <div class="lg:col-span-1 space-y-3 bg-black/20 p-4 rounded border border-white/10">
-                <div>
-                    <label class="section-label gold-text">ID de Villa:</label>
-                    <input type="text" id="idVilla" placeholder="Ej: Villa 05" class="input-style font-bold border-2">
-                </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-                <div class="p-2 border border-green-500/20 rounded bg-green-500/5">
-                    <label class="section-label text-green-400">1. Miembros en Villa (M/F)</label>
-                    <div class="flex gap-2">
-                        <input type="number" id="miemM" placeholder="M" class="input-style">
-                        <input type="number" id="miemF" placeholder="F" class="input-style">
-                    </div>
-                </div>
+<div id="report-section" class="p-6 space-y-8 bg-[#000d26] text-white min-h-screen font-['Inter']">
+    
+    <div class="flex justify-between items-end border-b border-[#D4AF37]/30 pb-4">
+        <div>
+            <h2 class="text-[#D4AF37] font-bold tracking-[0.2em] uppercase text-sm">Executive Operations Report</h2>
+            <p class="text-[10px] opacity-50 uppercase tracking-widest">Playa Grande Golf & Ocean Club | Live Data</p>
+        </div>
+        <button onclick="window.print()" class="text-[9px] border border-[#D4AF37] text-[#D4AF37] px-4 py-2 rounded hover:bg-[#D4AF37] hover:text-[#000d26] transition uppercase font-bold tracking-widest">
+            Export to PDF
+        </button>
+    </div>
 
-                <div class="p-2 border border-white/20 rounded bg-white/5">
-                    <label class="section-label gold-text">2. Visitas en Villa (M/F)</label>
-                    <div class="flex gap-2">
-                        <input type="number" id="visM" placeholder="M" class="input-style">
-                        <input type="number" id="visF" placeholder="F" class="input-style">
-                    </div>
-                </div>
-
-                <div class="p-2 border border-blue-500/20 rounded bg-blue-500/5">
-                    <label class="section-label text-blue-400">3. Actividad OP / Fuera (M/F)</label>
-                    <div class="flex gap-2">
-                        <input type="number" id="opM" placeholder="M" class="input-style">
-                        <input type="number" id="opF" placeholder="F" class="input-style">
-                    </div>
-                </div>
-
-                <div class="p-2 border border-red-500/20 rounded bg-red-500/5">
-                    <label class="section-label text-red-400">4. Retiros / Salidas (M/F)</label>
-                    <div class="flex gap-2">
-                        <input type="number" id="outM" placeholder="M" class="input-style">
-                        <input type="number" id="outF" placeholder="F" class="input-style">
-                    </div>
-                </div>
-
-                <button onclick="registrarVilla()" class="w-full btn-primary py-3 rounded uppercase text-[10px] tracking-widest shadow-lg mt-2">Actualizar Villa</button>
-                <button onclick="exportarPDF()" class="w-full border border-white/20 py-2 rounded uppercase text-[9px] opacity-70">Reporte PDF</button>
-            </div>
-
-            <div class="lg:col-span-1 bg-black/40 p-4 rounded border border-gold/20 flex flex-col justify-between">
-                <h2 class="text-xs font-bold gold-text uppercase mb-4 text-center">Estado General</h2>
-                <div style="height: 200px;"><canvas id="opsChart"></canvas></div>
-                <div class="mt-4 grid grid-cols-2 gap-2 text-center border-t border-white/10 pt-4">
-                    <div>
-                        <p id="tMiem" class="text-xl font-bold">0</p>
-                        <p class="text-[8px] uppercase opacity-60">Miembros</p>
-                    </div>
-                    <div>
-                        <p id="tVis" class="text-xl font-bold text-white">0</p>
-                        <p class="text-[8px] uppercase opacity-60">Visitas</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="lg:col-span-2">
-                <h2 class="text-xs font-bold gold-text uppercase mb-2 border-b border-gold/30 pb-1">Inventario por Villa</h2>
-                <div id="contenedorVillas" class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-[600px] overflow-y-auto">
-                    </div>
-            </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white/5 border border-white/10 p-5 rounded-2xl">
+            <p class="text-[9px] uppercase opacity-40 tracking-widest mb-1">Total Members Present</p>
+            <h3 class="text-3xl font-bold text-[#D4AF37]">42</h3>
+        </div>
+        <div class="bg-white/5 border border-white/10 p-5 rounded-2xl">
+            <p class="text-[9px] uppercase opacity-40 tracking-widest mb-1">Total Visitors (Today)</p>
+            <h3 class="text-3xl font-bold text-white">156</h3>
+        </div>
+        <div class="bg-white/5 border border-white/10 p-5 rounded-2xl">
+            <p class="text-[9px] uppercase opacity-40 tracking-widest mb-1">Peak Hour Traffic</p>
+            <h3 class="text-3xl font-bold text-white">14:00 <span class="text-xs opacity-50">PM</span></h3>
         </div>
     </div>
-    <script src="script.js"></script>
-</body>
-</html>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
+            <p class="text-[10px] uppercase tracking-widest text-[#D4AF37] mb-6">Hourly Traffic Flow</p>
+            <canvas id="trafficChart"></canvas>
+        </div>
+
+        <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
+            <p class="text-[10px] uppercase tracking-widest text-[#D4AF37] mb-6">Visitor Segmentation</p>
+            <canvas id="categoryChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. Configuración Gráfica de Tráfico (Líneas)
+    const ctxTraffic = document.getElementById('trafficChart').getContext('2d');
+    new Chart(ctxTraffic, {
+        type: 'line',
+        data: {
+            labels: ['8am', '10am', '12pm', '2pm', '4pm', '6pm'],
+            datasets: [{
+                label: 'Visits',
+                data: [12, 45, 87, 120, 65, 30],
+                borderColor: '#D4AF37',
+                backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.5)' } },
+                x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.5)' } }
+            }
+        }
+    });
+
+    // 2. Configuración Gráfica de Segmentación (Barras)
+    const ctxCategory = document.getElementById('categoryChart').getContext('2d');
+    new Chart(ctxCategory, {
+        type: 'bar',
+        data: {
+            labels: ['Members', 'Guests', 'Staff', 'Deliveries'],
+            datasets: [{
+                data: [42, 85, 30, 15],
+                backgroundColor: ['#D4AF37', '#ffffff', '#4a5568', '#2d3748']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+</script>
