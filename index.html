@@ -1,89 +1,108 @@
+<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<div id="report-section" class="p-6 space-y-8 bg-[#000d26] text-white min-h-screen font-['Inter']">
-    
-    <div class="flex justify-between items-end border-b border-[#D4AF37]/30 pb-4">
-        <div>
-            <h2 class="text-[#D4AF37] font-bold tracking-[0.2em] uppercase text-sm">Executive Operations Report</h2>
-            <p class="text-[10px] opacity-50 uppercase tracking-widest">Playa Grande Golf & Ocean Club | Live Data</p>
+<body class="bg-[#050505] text-white font-['Inter']">
+
+    <nav class="flex justify-center space-x-4 p-4 border-b border-[#D4AF37]/20 bg-[#000d26]">
+        <button onclick="switchTab('registro')" class="text-[10px] tracking-widest uppercase font-bold text-[#D4AF37] border-b-2 border-[#D4AF37] pb-1" id="btn-reg">Registro</button>
+        <button onclick="switchTab('reporte')" class="text-[10px] tracking-widest uppercase font-bold text-white/50 hover:text-[#D4AF37] transition" id="btn-rep">Reporte Ejecutivo</button>
+    </nav>
+
+    <div id="section-registro" class="p-6">
+        <h2 class="text-center text-[#D4AF37] tech-font tracking-widest mb-6">OPERACIONES PLAYA GRANDE</h2>
+        <div class="grid grid-cols-2 gap-4">
+             <button class="bg-[#D4AF37] text-navy p-6 rounded-2xl font-bold uppercase text-xs shadow-lg">Entrada Miembro</button>
+             <button class="bg-white/10 border border-white/20 p-6 rounded-2xl font-bold uppercase text-xs">Salida Miembro</button>
         </div>
-        <button onclick="window.print()" class="text-[9px] border border-[#D4AF37] text-[#D4AF37] px-4 py-2 rounded hover:bg-[#D4AF37] hover:text-[#000d26] transition uppercase font-bold tracking-widest">
-            Export to PDF
-        </button>
+        </div>
+
+    <div id="section-reporte" class="p-6 hidden animate-fade-in">
+        <div class="max-w-4xl mx-auto space-y-8">
+            
+            <div class="flex justify-between items-center border-b border-[#D4AF37]/30 pb-4">
+                <h2 class="text-[#D4AF37] font-bold tracking-[0.2em] uppercase text-sm">Executive Operations Audit</h2>
+                <button onclick="window.print()" class="text-[8px] bg-[#D4AF37] text-black px-4 py-2 rounded font-bold uppercase">PDF</button>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4">
+                <div class="bg-[#000d26] border border-[#D4AF37]/20 p-4 rounded-xl text-center">
+                    <p class="text-[8px] uppercase opacity-40">Members</p>
+                    <span class="text-xl text-[#D4AF37] font-bold">42</span>
+                </div>
+                <div class="bg-[#000d26] border border-[#D4AF37]/20 p-4 rounded-xl text-center">
+                    <p class="text-[8px] uppercase opacity-40">Visitors</p>
+                    <span class="text-xl font-bold">156</span>
+                </div>
+                <div class="bg-[#000d26] border border-[#D4AF37]/20 p-4 rounded-xl text-center">
+                    <p class="text-[8px] uppercase opacity-40">Peak</p>
+                    <span class="text-xl font-bold">2 PM</span>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                    <p class="text-[9px] uppercase tracking-widest text-[#D4AF37] mb-4 text-center">Hourly Traffic</p>
+                    <canvas id="trafficChart" height="150"></canvas>
+                </div>
+                <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                    <p class="text-[9px] uppercase tracking-widest text-[#D4AF37] mb-4 text-center">Visitor Segmentation</p>
+                    <canvas id="categoryChart" height="150"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white/5 border border-white/10 p-5 rounded-2xl">
-            <p class="text-[9px] uppercase opacity-40 tracking-widest mb-1">Total Members Present</p>
-            <h3 class="text-3xl font-bold text-[#D4AF37]">42</h3>
-        </div>
-        <div class="bg-white/5 border border-white/10 p-5 rounded-2xl">
-            <p class="text-[9px] uppercase opacity-40 tracking-widest mb-1">Total Visitors (Today)</p>
-            <h3 class="text-3xl font-bold text-white">156</h3>
-        </div>
-        <div class="bg-white/5 border border-white/10 p-5 rounded-2xl">
-            <p class="text-[9px] uppercase opacity-40 tracking-widest mb-1">Peak Hour Traffic</p>
-            <h3 class="text-3xl font-bold text-white">14:00 <span class="text-xs opacity-50">PM</span></h3>
-        </div>
-    </div>
+    <script>
+        // Función para cambiar entre Registro y Reporte sin recargar
+        function switchTab(tab) {
+            const reg = document.getElementById('section-registro');
+            const rep = document.getElementById('section-reporte');
+            const btnReg = document.getElementById('btn-reg');
+            const btnRep = document.getElementById('btn-rep');
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
-            <p class="text-[10px] uppercase tracking-widest text-[#D4AF37] mb-6">Hourly Traffic Flow</p>
-            <canvas id="trafficChart"></canvas>
-        </div>
-
-        <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
-            <p class="text-[10px] uppercase tracking-widest text-[#D4AF37] mb-6">Visitor Segmentation</p>
-            <canvas id="categoryChart"></canvas>
-        </div>
-    </div>
-</div>
-
-<script>
-    // 1. Configuración Gráfica de Tráfico (Líneas)
-    const ctxTraffic = document.getElementById('trafficChart').getContext('2d');
-    new Chart(ctxTraffic, {
-        type: 'line',
-        data: {
-            labels: ['8am', '10am', '12pm', '2pm', '4pm', '6pm'],
-            datasets: [{
-                label: 'Visits',
-                data: [12, 45, 87, 120, 65, 30],
-                borderColor: '#D4AF37',
-                backgroundColor: 'rgba(212, 175, 55, 0.1)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.5)' } },
-                x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.5)' } }
+            if (tab === 'registro') {
+                reg.classList.remove('hidden');
+                rep.classList.add('hidden');
+                btnReg.classList.add('text-[#D4AF37]', 'border-[#D4AF37]');
+                btnRep.classList.remove('text-[#D4AF37]', 'border-[#D4AF37]');
+            } else {
+                reg.classList.add('hidden');
+                rep.classList.remove('hidden');
+                btnRep.classList.add('text-[#D4AF37]', 'border-[#D4AF37]');
+                btnReg.classList.remove('text-[#D4AF37]', 'border-[#D4AF37]');
+                renderCharts(); // Cargar gráficas solo al ver el reporte
             }
         }
-    });
 
-    // 2. Configuración Gráfica de Segmentación (Barras)
-    const ctxCategory = document.getElementById('categoryChart').getContext('2d');
-    new Chart(ctxCategory, {
-        type: 'bar',
-        data: {
-            labels: ['Members', 'Guests', 'Staff', 'Deliveries'],
-            datasets: [{
-                data: [42, 85, 30, 15],
-                backgroundColor: ['#D4AF37', '#ffffff', '#4a5568', '#2d3748']
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
-                x: { grid: { display: false } }
-            }
+        function renderCharts() {
+            // Lógica de Chart.js (Aquí re-utilizamos el código que le di antes)
+            const ctxT = document.getElementById('trafficChart').getContext('2d');
+            new Chart(ctxT, {
+                type: 'line',
+                data: {
+                    labels: ['8am', '12pm', '4pm', '8pm'],
+                    datasets: [{
+                        data: [10, 85, 40, 20],
+                        borderColor: '#D4AF37',
+                        backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                        fill: true
+                    }]
+                },
+                options: { plugins: { legend: { display: false } } }
+            });
+
+            const ctxC = document.getElementById('categoryChart').getContext('2d');
+            new Chart(ctxC, {
+                type: 'doughnut', // Cambié a Dona para que se vea más moderno
+                data: {
+                    labels: ['Members', 'Guests', 'Staff'],
+                    datasets: [{
+                        data: [42, 85, 30],
+                        backgroundColor: ['#D4AF37', '#ffffff', '#4a5568']
+                    }]
+                },
+                options: { plugins: { legend: { position: 'bottom', labels: { color: '#fff', font: { size: 10 } } } } }
+            });
         }
-    });
-</script>
+    </script>
+</body>
